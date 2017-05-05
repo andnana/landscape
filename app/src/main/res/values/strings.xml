@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">逛景</string>
+    <string name="previous">上一个</string>
+    <string name="next">下一个</string>
+    <string name="region_title">地区列表</string>
+
+</resources>

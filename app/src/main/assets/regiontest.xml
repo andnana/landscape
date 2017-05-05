@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<regions>
+    <region>
+        <en_name>title</en_name>
+        <region_name>名称</region_name>
+        <region_abbreviation>简称</region_abbreviation>
+        <region_describe>介绍</region_describe>
+        <provicial_capital>省会</provicial_capital>
+        <belong_to>类别</belong_to>
+    </region>
+    </regions>
