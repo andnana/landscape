@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <regions>
-    <region en_name="en_name">
-        <region_name>名称</region_name>
-        <region_abbreviation>简称</region_abbreviation>
-        <region_describe>介绍</region_describe>
-        <provicial_capital>省会</provicial_capital>
-        <belong_to>类别</belong_to>
-    </region>
+
     <region en_name="beijing">
         <region_name>北京</region_name>
         <region_abbreviation>京</region_abbreviation>
         <region_describe>北京有据可查的第一个名称为“蓟”，是春秋战国时燕国的都城。辽金是将北京作为陪都，称为燕京。金灭辽后，迁都于此，称中都。元代改称大都。明成祖朱棣从南京迁都于此，改称“北京”。名称一直沿用至今。1949年设为直辖市。取全称中的“京”字作为简称。</region_describe>
         <provicial_capital>无</provicial_capital>
+        <landscape>
+
+            <landscapeitem en_name="gugong">
+                <name>北京故宫</name>
+                <describe>北京故宫的介绍</describe>
+                <image image_en_name="gugongone">
+                    <image_describe>北京故宫图片介绍1</image_describe>
+                </image>
+                <image image_en_name="gugongtwo">
+                    <image_describe>北京故宫图片介绍2</image_describe>
+                </image>
+
+                <image image_en_name="gugongthree">
+                    <image_describe>北京故宫图片介绍3</image_describe>
+                </image>
+            </landscapeitem>
+            <landscapeitem en_name="tiantan"></landscapeitem>
+            <landscapeitem en_name="yiheyuan"></landscapeitem>
+            <landscapeitem en_name="beihaigongyuan"></landscapeitem>
+            <landscapeitem en_name="changcheng"></landscapeitem>
+        </landscape>
         <belong_to>直辖市</belong_to>
     </region>
     <region en_name="tianjin">

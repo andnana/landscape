@@ -32,4 +32,6 @@ dependencies {
     compile 'junit:junit:4.12'
     compile files('libs/saxon9.jar')
     compile files('libs/saxon9-xqj-mychange.jar')
+    compile files('libs/AppOffer_3.0.1.jar')
+    compile files('libs/YoumiSdk_v7.1.0_2017-04-11.jar')
 }

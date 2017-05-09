@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">逛景</string>
-    <string name="previous">上一个</string>
-    <string name="next">下一个</string>
-    <string name="region_title">地区列表</string>
-
+    <string name="region_name">名称</string>
+    <string name="region_abbraviation">简称</string>
+    <string name="belong_to">类别</string>
+    <string name="option">选项</string>
+    <string name="landscope_region">景区</string>
+    <string name="exit">退出</string>
+    <string name="image">图片</string>
 </resources>

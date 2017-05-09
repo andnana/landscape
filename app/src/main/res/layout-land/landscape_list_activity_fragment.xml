@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/regionListContainer"
+    android:id="@+id/landscapeListContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@mipmap/background_horizontal"
+    android:background="@mipmap/background_vertical"
     >
     <RelativeLayout
         android:id="@+id/top"
@@ -16,12 +16,12 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_margin="3dp"
+            android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:src="@mipmap/back_alt"
             />
-
 
         <TextView
             android:layout_height="match_parent"
@@ -35,9 +35,8 @@
             android:textSize="18sp"
             />
     </RelativeLayout>
-
     <LinearLayout
-        android:id="@+id/region_list_header"
+        android:id="@+id/landscape_list_header"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@id/top"
@@ -50,7 +49,7 @@
             android:layout_weight="1"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:text="@string/region_name"
+            android:text="名称"
             />
         <TextView
             android:layout_width="0dp"
@@ -59,50 +58,20 @@
             android:layout_weight="1"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:text="@string/region_abbraviation"
+            android:text="介绍"
             />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:text="@string/belong_to"
-            />
+
 
     </LinearLayout>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/regionList"
+        android:id="@+id/landscapeList"
+        android:layout_below="@id/landscape_list_header"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@id/region_list_header"
+        android:layout_height="300dp"
 
         >
     </FrameLayout>
-    <ImageView
-        android:id="@+id/click_tips"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:background="@mipmap/click_horizontal_tips"
-        android:visibility="invisible"
-        android:alpha="0.5"
 
-        />
-    <ImageView
-        android:id="@+id/up_down_tips"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:background="@mipmap/up_down_horizontal_tips"
-        android:alpha="0.5"
-
-        />
     <LinearLayout
         android:id="@+id/ll_banner"
         android:layout_width="match_parent"
@@ -113,3 +82,4 @@
         >
     </LinearLayout>
 </RelativeLayout>
+

@@ -1,13 +1,22 @@
 package io.xicp.myspace.region2;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.textservice.TextInfo;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import net.youmi.android.AdManager;
+import net.youmi.android.normal.banner.BannerManager;
+import net.youmi.android.normal.banner.BannerViewListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,8 +34,9 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Administrator on 2017/4/29 0029.
  */
 
-public class RegionFragment extends Fragment{
+public class RegionFragment extends Fragment implements View.OnClickListener{
     public static final String EXTRA_REGION_ID = "io.xicp.myspace.region2.region_id";
+    private ImageView landscapeRegionImageView;
     private TextView regionNameTextView;
     private TextView belongtoTextView;
     private TextView provinceCapitalTextView;
@@ -35,17 +45,48 @@ public class RegionFragment extends Fragment{
     private ImageView picImageView;
     private String regionEnName = "";
     private ImageView leftRightTipsImageView;
+    private  LinearLayout bannerLayout;
+    private View bannerView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AdManager.getInstance(getActivity()).init("3cf12c7d8c82c297", "a8414f5f3deeea12", true);
+        bannerView = BannerManager.getInstance(getActivity())
+                .getBannerView(getActivity(),  new BannerViewListener(){
+
+                    /**
+                     * 请求广告成功
+                     */
+                    @Override
+                    public void onRequestSuccess() {
+
+                    }
+
+                    /**
+                     * 切换广告条
+                     */
+                    @Override
+                    public void onSwitchBanner() {
+
+                    }
+
+                    /**
+                     * 请求广告失败
+                     */
+                    @Override
+                    public void onRequestFailed() {
+
+                    }
+                });
+
 //        regionEnName = getActivity().getIntent().getStringExtra(EXTRA_REGION_ID);
         regionEnName = getArguments().getString(EXTRA_REGION_ID);
         System.out.println(regionEnName);
     System.out.println("##$$$");
     }
-    public static RegionFragment newInstance(String regionId){
+    public static RegionFragment newInstance(String regionEnName){
         Bundle args = new Bundle();
-        args.putString(EXTRA_REGION_ID, regionId);
+        args.putString(EXTRA_REGION_ID, regionEnName);
         RegionFragment fragment = new RegionFragment();
         fragment.setArguments(args);
         return fragment;
@@ -55,6 +96,11 @@ public class RegionFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("xcfdsdf$");
         View v = inflater.inflate(R.layout.activity_region_detail, container, false);
+        landscapeRegionImageView = (ImageView) v.findViewById(R.id.landscaperegion);
+        landscapeRegionImageView.setClickable(true);
+//        landscapeRegionImageView.setFocusableInTouchMode(true);
+//        landscapeRegionImageView.setFocusable(true);
+
         regionNameTextView = (TextView)v.findViewById(R.id.region_name);
         belongtoTextView = (TextView)v.findViewById(R.id.belongto);
         provinceCapitalTextView = (TextView)v.findViewById(R.id.provincialCapital);
@@ -62,6 +108,23 @@ public class RegionFragment extends Fragment{
         abbreviationTextView = (TextView)v.findViewById(R.id.abbreviation);
         picImageView = (ImageView)v.findViewById(R.id.pic);
         leftRightTipsImageView = (ImageView)v.findViewById(R.id.left_right_tips);
+        landscapeRegionImageView.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), LandscapeListActivity.class);
+                intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
+                startActivity(intent);
+            }
+        });
+
+// 获取要嵌入广告条的布局
+         LinearLayout bannerLayout = (LinearLayout)v.findViewById(R.id.ll_banner);
+
+// 将广告条加入到布局中
+        ViewGroup p = (ViewGroup)bannerView.getParent();
+        if(p != null){
+            p.removeAllViewsInLayout();
+        }
+            bannerLayout.addView(bannerView);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringElementContentWhitespace(true);
@@ -239,6 +302,15 @@ public class RegionFragment extends Fragment{
         return v;
 
 }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 展示广告条窗口的 onDestroy() 回调方法中调用
+        BannerManager.getInstance(getActivity()).onDestroy();
+    }
 
+    @Override
+    public void onClick(View v) {
 
+    }
 }

@@ -35,7 +35,7 @@ public class RegionListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.region_title);
+//        getActivity().setTitle(R.string.app_name);
         System.out.println("#$#$#$");
         regionFeed = getFeed();
 

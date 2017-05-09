@@ -12,21 +12,20 @@ import net.youmi.android.normal.banner.BannerManager;
 import net.youmi.android.normal.banner.BannerViewListener;
 
 /**
- * Created by Administrator on 2017/4/29 0029.
+ * Created by Administrator on 2017/5/7 0007.
  */
 
-public class RegionListActivity extends FragmentActivity {
-
+public class LandscapeListActivity extends FragmentActivity {
     protected Fragment createFragment() {
-        return new RegionListFragment();
+        return new LandscapeListFragment();
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.region_list_activity_fragment);
-        AdManager.getInstance(RegionListActivity.this).init("3cf12c7d8c82c297", "a8414f5f3deeea12", true);
-        View bannerView = BannerManager.getInstance(RegionListActivity.this)
-                .getBannerView(RegionListActivity.this,  new BannerViewListener(){
+        setContentView(R.layout.landscape_list_activity_fragment);
+        AdManager.getInstance(LandscapeListActivity.this).init("3cf12c7d8c82c297", "a8414f5f3deeea12", true);
+        View bannerView = BannerManager.getInstance(LandscapeListActivity.this)
+                .getBannerView(LandscapeListActivity.this,  new BannerViewListener(){
 
                     /**
                      * 请求广告成功
@@ -59,17 +58,11 @@ public class RegionListActivity extends FragmentActivity {
 // 将广告条加入到布局中
         bannerLayout.addView(bannerView);
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.regionListContainer);
+        Fragment fragment = fm.findFragmentById(R.id.landscapeListContainer);
         if(fragment == null){
             fragment = createFragment();
-            fm.beginTransaction().add(R.id.regionList, fragment).commit();
+            fm.beginTransaction().add(R.id.landscapeList, fragment).commit();
         }
 
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // 展示广告条窗口的 onDestroy() 回调方法中调用
-        BannerManager.getInstance(RegionListActivity.this).onDestroy();
     }
 }

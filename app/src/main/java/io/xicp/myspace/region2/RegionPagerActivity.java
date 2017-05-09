@@ -50,9 +50,9 @@ public class RegionPagerActivity extends FragmentActivity {
                 return regionList.size();
             }
         });
-        String regionId = getIntent().getStringExtra(RegionFragment.EXTRA_REGION_ID);
+        String regionEnName = getIntent().getStringExtra(RegionFragment.EXTRA_REGION_ID);
         for(int i = 0; i < regionList.size(); i++){
-            if(regionList.get(i).getEnName().equals(regionId)){
+            if(regionList.get(i).getEnName().equals(regionEnName)){
                 viewPager.setCurrentItem(i);
                 break ;
             }
