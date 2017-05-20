@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/YoumiSdk_v7.2.1_2017-05-16" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

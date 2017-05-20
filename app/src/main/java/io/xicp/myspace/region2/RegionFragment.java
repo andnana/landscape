@@ -2,21 +2,21 @@ package io.xicp.myspace.region2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.textservice.TextInfo;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.youmi.android.AdManager;
-import net.youmi.android.normal.banner.BannerManager;
-import net.youmi.android.normal.banner.BannerViewListener;
+import cse.der.qsw.AdManager;
+import cse.der.qsw.nm.bn.BannerManager;
+import cse.der.qsw.nm.bn.BannerViewListener;
+import cse.der.qsw.onlineconfig.OnlineConfigCallBack;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,7 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Administrator on 2017/4/29 0029.
  */
 
-public class RegionFragment extends Fragment implements View.OnClickListener{
+public class RegionFragment extends Fragment{
     public static final String EXTRA_REGION_ID = "io.xicp.myspace.region2.region_id";
     private ImageView landscapeRegionImageView;
     private TextView regionNameTextView;
@@ -45,6 +45,7 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
     private ImageView picImageView;
     private String regionEnName = "";
     private ImageView leftRightTipsImageView;
+    private ImageView   backImageView;
     private  LinearLayout bannerLayout;
     private View bannerView;
     @Override
@@ -81,8 +82,7 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
 
 //        regionEnName = getActivity().getIntent().getStringExtra(EXTRA_REGION_ID);
         regionEnName = getArguments().getString(EXTRA_REGION_ID);
-        System.out.println(regionEnName);
-    System.out.println("##$$$");
+
     }
     public static RegionFragment newInstance(String regionEnName){
         Bundle args = new Bundle();
@@ -94,7 +94,7 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("xcfdsdf$");
+
         View v = inflater.inflate(R.layout.activity_region_detail, container, false);
         landscapeRegionImageView = (ImageView) v.findViewById(R.id.landscaperegion);
         landscapeRegionImageView.setClickable(true);
@@ -108,23 +108,29 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
         abbreviationTextView = (TextView)v.findViewById(R.id.abbreviation);
         picImageView = (ImageView)v.findViewById(R.id.pic);
         leftRightTipsImageView = (ImageView)v.findViewById(R.id.left_right_tips);
+        backImageView = (ImageView)v.findViewById(R.id.back);
         landscapeRegionImageView.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), LandscapeListActivity.class);
                 intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
                 startActivity(intent);
             }
+
         });
-
+        backImageView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               getActivity().finish();
+            }
+        });
 // 获取要嵌入广告条的布局
-         LinearLayout bannerLayout = (LinearLayout)v.findViewById(R.id.ll_banner);
-
+          bannerLayout = (LinearLayout)v.findViewById(R.id.ll_banner);
+        AdManager.getInstance(getActivity()).asyncGetOnlineConfig("isOpen",new MyOnlineConfigCallBack());
 // 将广告条加入到布局中
         ViewGroup p = (ViewGroup)bannerView.getParent();
         if(p != null){
             p.removeAllViewsInLayout();
         }
-            bannerLayout.addView(bannerView);
+
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringElementContentWhitespace(true);
@@ -158,7 +164,7 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
             DocumentBuilder builder = factory.newDocumentBuilder();
             //解析XML文档，并获取该XML文档对应的Document
              doc = builder.parse(getResources().getAssets().open("region.xml"));
-            System.out.println(doc+"doc");
+
         }catch (ParserConfigurationException e){
             e.printStackTrace();
         }catch(IOException e){
@@ -183,90 +189,87 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
         label1:
         for (int i = 0; i < nodeList.getLength() ; i++ )
         {
-            System.out.println("------------第" + i + "个地区--------------");
+
 
             Node comBook = nodeList.item(i);
-            System.out.println(comBook.getAttributes().getLength());
+
             //获取ISBN属性节点
             if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(regionEnName)){
-                if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.BEIJING)){
+                if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.BEIJING.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.beijing);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.TIANJIN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.TIANJIN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.tianjin);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANGHAI)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANGHAI.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.shanghai);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.CHONGQING)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.CHONGQING.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.chongqing);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.NEIMENGGU)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.NEIMENGGU.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.neimenggu);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.XINJIANG)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.XINJIANG.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.xinjiang);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.XIZANG)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.XIZANG.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.xizang);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.NINGXIA)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.NINGXIA.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.ningxia);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GUANGXI)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GUANGXI.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.guangxi);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HONGKONG)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HONGKONG.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.hongkong);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.AOMEN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.AOMEN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.aomen);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HEILONGJIANG)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HEILONGJIANG.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.heilongjiang);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.JILIN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.JILIN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.jilin);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.LIAONING)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.LIAONING.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.liaoning);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HEBEI)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HEBEI.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.hebei);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANXIMOUNTAIN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANXIMOUNTAIN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.shanximountain);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.QINGHAI)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.QINGHAI.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.qinghai);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANDONG)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANDONG.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.shandong);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HENAN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HENAN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.henan);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.JIANGSU)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.JIANGSU.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.jiangsu);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.ANHUI)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.ANHUI.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.anhui);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.ZHEJIANG)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.ZHEJIANG.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.zhejiang);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.FUJIAN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.FUJIAN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.fujian);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.JIANGXI)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.JIANGXI.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.jiangxi);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HUNAN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HUNAN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.hunan);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HUBEI)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HUBEI.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.hubei);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GUANGDONG)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GUANGDONG.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.guangdong);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.TAIWAN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.TAIWAN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.taiwan);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HAINAN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.HAINAN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.hainan);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GANSU)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GANSU.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.gansu);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANXIEAR)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SHANXIEAR.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.shanxiear);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SICHUAN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.SICHUAN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.sichuan);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GUIZHOU)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.GUIZHOU.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.guizhou);
-                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.YUNNAN)){
+                }else if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(RegionEnName.YUNNAN.toString().toLowerCase())){
                     picImageView.setImageResource(R.mipmap.yunnan);
                 }
 
                 //获取所有comBook下的所有子元素
-//                String name ="beijing";
-//                Region region = new Region();
-//                region.setPic(R.mipmap.beijing);
-//                picImageView.setImageResource(R.mipmap.name);
+
                 NodeList attList = comBook.getChildNodes();
                 //遍历每个子元素
-               System.out.println(attList.getLength()+"length");
+
                 for (int j = 0; j < attList.getLength() ; j++ )
                 {
                         Node node = attList.item(j);
@@ -302,6 +305,35 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
         return v;
 
 }
+    class MyOnlineConfigCallBack implements OnlineConfigCallBack {
+        @Override
+        public void onGetOnlineConfigSuccessful(String key, String value) {
+            // TODO Auto-generated method stub
+            // 获取在线参数成功
+
+            if (key.equals("isOpen")) {
+                if (value.equals("1")) {
+
+                    bannerLayout.addView(bannerView);
+                    // 这里设置广告开关——开启
+
+                } else if (value.equals("0")) {
+                    // 这里设置广告开关——关闭
+
+
+                }
+            }else{
+
+            }
+        }
+
+        @Override
+        public void onGetOnlineConfigFailed(String key) {
+            // TODO Auto-generated method stub
+
+            // 获取在线参数失败，可能原因有：键值未设置或为空、网络异常、服务器异常
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -309,8 +341,5 @@ public class RegionFragment extends Fragment implements View.OnClickListener{
         BannerManager.getInstance(getActivity()).onDestroy();
     }
 
-    @Override
-    public void onClick(View v) {
 
-    }
 }

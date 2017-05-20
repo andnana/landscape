@@ -14,6 +14,7 @@
         android:background="#76FF87">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -23,17 +24,7 @@
             android:src="@mipmap/back_alt"
             />
 
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="50dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:textColor="#FFFFFF"
 
-            android:text="@string/image"
-            android:textSize="18sp"
-            />
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/landscape_list_header"
@@ -41,7 +32,7 @@
         android:layout_height="40dp"
         android:layout_below="@id/top"
         android:background="#FFBDFABD">
-        >
+
 
         <TextView
             android:layout_width="0dp"
@@ -55,14 +46,14 @@
 
 
     </LinearLayout>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/landscapeImageList"
         android:layout_below="@id/landscape_list_header"
         android:layout_width="match_parent"
         android:layout_height="300dp"
 
         >
-    </FrameLayout>
+    </ListView>
 
     <LinearLayout
         android:id="@+id/ll_banner"

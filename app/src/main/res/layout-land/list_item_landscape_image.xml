@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:background="#c3d7c7"
+        android:background="#FFFFFF"
         android:layout_weight="1"
         />
 
@@ -19,7 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:background="#c3d7c7"
+        android:background="#FFFFFF"
+        android:padding="3dp"
         android:src="@mipmap/forward_alt"
         />
 </LinearLayout>

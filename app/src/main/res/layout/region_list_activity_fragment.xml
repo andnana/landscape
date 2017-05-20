@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/landscapeListContainer"
+    android:id="@+id/regionListContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -13,6 +13,7 @@
         android:orientation="horizontal"
         android:background="#76FF87">
         <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -22,17 +23,7 @@
             android:src="@mipmap/back_alt"
             />
 
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="50dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:textColor="#FFFFFF"
 
-            android:text="@string/image"
-            android:textSize="18sp"
-            />
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/region_list_header"
@@ -40,7 +31,7 @@
         android:layout_height="40dp"
         android:layout_below="@id/top"
         android:background="#FFBDFABD">
-        >
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -70,14 +61,14 @@
             />
 
     </LinearLayout>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/regionList"
         android:layout_below="@id/region_list_header"
         android:layout_width="match_parent"
         android:layout_height="300dp"
 
             >
-    </FrameLayout>
+    </ListView>
     <ImageView
         android:id="@+id/click_tips"
         android:layout_width="match_parent"
@@ -95,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
+        android:contentDescription="dfe"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:background="@mipmap/up_down_vertical_tips"

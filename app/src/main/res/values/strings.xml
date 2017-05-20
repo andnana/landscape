@@ -7,4 +7,11 @@
     <string name="landscope_region">景区</string>
     <string name="exit">退出</string>
     <string name="image">图片</string>
+    <string name="author">作者：王人杰</string>
+    <string name="words"></string>
+    <string name="email">wangrenjiewang@163.com</string>
+    <string name="weibo">http://weibo.com/andnanamysun</string>
+    <string name="confirm">确定</string>
+    <string name="correct">回答正确</string>
+    <string name="wrong">回答错误</string>
 </resources>

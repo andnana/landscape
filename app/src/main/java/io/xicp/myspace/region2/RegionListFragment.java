@@ -3,19 +3,35 @@ package io.xicp.myspace.region2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.os.Environment;
+import android.support.v4.app.Fragment;
+
+import android.util.Xml;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import cse.der.qsw.AdManager;
+import cse.der.qsw.nm.bn.BannerManager;
+import cse.der.qsw.nm.bn.BannerViewListener;
+import cse.der.qsw.onlineconfig.OnlineConfigCallBack;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,22 +43,100 @@ import javax.xml.parsers.SAXParserFactory;
  * Created by Administrator on 2017/4/29 0029.
  */
 
-public class RegionListFragment extends ListFragment {
-    private RegionFeed regionFeed;
+public class RegionListFragment extends Fragment {
+
     private List<Region> regionList = new ArrayList<Region>();
     private ImageView upDownTipsImageView ;
     private ImageView clickTipsImageView;
+    private LinearLayout bannerLayout;
+    private View bannerView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getActivity().setTitle(R.string.app_name);
-        System.out.println("#$#$#$");
-        regionFeed = getFeed();
 
-            regionList = regionFeed.getAllRegionList();
-            System.out.println(regionList.size());
-        upDownTipsImageView = (ImageView)getActivity().findViewById(R.id.up_down_tips);
-        clickTipsImageView = (ImageView)getActivity().findViewById(R.id.click_tips);
+//        regionFeed = readxml();
+
+            regionList = readxml();
+
+
+
+
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+        View v = inflater.inflate(R.layout.region_list_activity_fragment, container, false);
+
+        AdManager.getInstance(getActivity()).init("3cf12c7d8c82c297", "a8414f5f3deeea12", true);
+         bannerView = BannerManager.getInstance(getActivity())
+                .getBannerView(getActivity(),  new BannerViewListener(){
+
+                    /**
+                     * 请求广告成功
+                     */
+                    @Override
+                    public void onRequestSuccess() {
+
+                    }
+
+                    /**
+                     * 切换广告条
+                     */
+                    @Override
+                    public void onSwitchBanner() {
+
+                    }
+
+                    /**
+                     * 请求广告失败
+                     */
+                    @Override
+                    public void onRequestFailed() {
+
+                    }
+                });
+
+// 获取要嵌入广告条的布局
+        bannerLayout = (LinearLayout)v.findViewById(R.id.ll_banner);
+        AdManager.getInstance(getActivity()).asyncGetOnlineConfig("isOpen",new MyOnlineConfigCallBack());
+// 将广告条加入到布局中
+
+
+
+
+        ImageView backImageView = (ImageView)v.findViewById(R.id.back);
+        ListView regionListView = (ListView)v.findViewById(R.id.regionList);
+        RegionAdapter adapter = new RegionAdapter(regionList);
+        regionListView.setAdapter(adapter);
+        regionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> l, View v, int position,
+                                    long id) {
+
+                Region region = regionList.get(position);
+
+                Intent intent = new Intent(getActivity(), RegionPagerActivity.class);
+                intent.putExtra(RegionFragment.EXTRA_REGION_ID, region.getEnName());
+                startActivity(intent);
+            }
+        });
+        backImageView.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+//                Intent intent = new Intent(getActivity(), LandscapeListActivity.class);
+//                intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
+//                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+
+        upDownTipsImageView = (ImageView)v.findViewById(R.id.up_down_tips);
+        clickTipsImageView = (ImageView)v.findViewById(R.id.click_tips);
+
+
         SharedPreferences sharedata = getActivity().getSharedPreferences("fristrun", 0);
         Boolean isUpDown = sharedata.getBoolean("isUpDown", true);
         if (isUpDown) {
@@ -94,25 +188,38 @@ public class RegionListFragment extends ListFragment {
                 }
             });
         }
+        return v ;
 
-//        regionList.add(new Region("abc"));
-//        regionList.add(new Region("def"));
-//        ArrayAdapter<Region> adapter = new ArrayAdapter<Region>(getActivity(),android.R.layout.simple_list_item_1,regionList);
-//        setListAdapter(adapter);
-        RegionAdapter adapter = new RegionAdapter(regionList);
-        setListAdapter(adapter);
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Region region = regionFeed.getRegionItem(position);
-//        System.out.println(region.getRegionName());
-//        System.out.println(region.getEnName());
-//        Intent intent = new Intent(getActivity(), RegionActivity.class);
-        Intent intent = new Intent(getActivity(), RegionPagerActivity.class);
-        intent.putExtra(RegionFragment.EXTRA_REGION_ID, region.getEnName());
-        startActivity(intent);
+    class MyOnlineConfigCallBack implements OnlineConfigCallBack {
+        @Override
+        public void onGetOnlineConfigSuccessful(String key, String value) {
+            // TODO Auto-generated method stub
+            // 获取在线参数成功
+
+            if (key.equals("isOpen")) {
+                if (value.equals("1")) {
+
+                    bannerLayout.addView(bannerView);
+                    // 这里设置广告开关——开启
+
+                } else if (value.equals("0")) {
+                    // 这里设置广告开关——关闭
+
+
+                }
+            }else{
+
+            }
+        }
+
+        @Override
+        public void onGetOnlineConfigFailed(String key) {
+            // TODO Auto-generated method stub
+
+            // 获取在线参数失败，可能原因有：键值未设置或为空、网络异常、服务器异常
+        }
     }
     private class RegionAdapter extends ArrayAdapter<Region> {
         public RegionAdapter(List<Region> regions){
@@ -134,30 +241,102 @@ public class RegionListFragment extends ListFragment {
 
         }
     }
-    public RegionFeed getFeed(){
+    public List<Region> readxml() {
+        List<Region> regionList = new ArrayList<Region>();
+//        try {
+//            File file = new File( new InputSource(this.getClass().getClassLoader().getResourceAsStream("assets/region.xml")));//取得本地xml文件);
+
+//            if(!file.exists()){
+//
+//                try {
+//                    file.createNewFile();
+//                } catch (IOException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }else{
+//
+//            }
+
+//            FileInputStream fis = new FileInputStream();
+            // 获得pull解析器对象
+            XmlPullParser parser = Xml.newPullParser();
+            // 指定解析的文件和编码格式
+        int eventType = 0;
+        InputStream is = null;
         try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser parser = factory.newSAXParser();
-            XMLReader reader = parser.getXMLReader();
-            RegionHandler handler = new RegionHandler();
-            reader.setContentHandler(handler);
-            InputSource is = new InputSource(this.getClass().getClassLoader().getResourceAsStream("assets/region.xml"));//取得本地xml文件
-            System.out.println("abcd");
-            System.out.println(is+"is");
+             is = getActivity().getAssets().open("region.xml");
+            if (is != null) {
+                parser.setInput(is, "utf-8");
+            }
 
-            reader.parse(is);
 
-            return handler.getRegionFeed();
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+             eventType = parser.getEventType(); // 获得事件类型
+        }catch (XmlPullParserException e){
+
+        }catch (Exception e){
+
         }
-        return null;
+
+            String en_name = null;
+            String region_name = null;
+            String region_abbreviation = null;
+            String region_describe = null;
+            String provicial_capital = null;
+            String belong_to = null;
+        try {
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                String tagName = parser.getName(); // 获得当前节点的名称
+
+                switch (eventType) {
+                    case XmlPullParser.START_TAG: // 当前等于开始节点 <person>
+                        if ("region".equals(tagName)) { // <
+                            en_name = parser.getAttributeValue(null, "en_name");
+                        } else if ("region_name".equals(tagName)) { //
+                            region_name = parser.nextText();
+                        } else if ("region_abbreviation".equals(tagName)) { //
+                            region_abbreviation = parser.nextText();
+                        } else if ("region_describe".equals(tagName)) { //
+                            region_describe = parser.nextText();
+                        } else if ("provicial_capital".equals(tagName)) { //
+                            provicial_capital = parser.nextText();
+                        } else if ("belong_to".equals(tagName)) { //
+                            belong_to = parser.nextText();
+                        }
+
+
+                        break;
+
+
+                    case XmlPullParser.END_TAG: // </persons>
+                        if ("region".equals(tagName)) {
+                            Region region = new Region();
+                            region.setEnName(en_name);
+                            region.setRegionName(region_name);
+                            region.setAbbreviation(region_abbreviation);
+                            region.setDescribe(region_describe);
+                            region.setProvincialCapital(provicial_capital);
+                            region.setBelongTo(belong_to);
+                            regionList.add(region);
+                            System.out.println(region);
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                eventType = parser.next(); // 获得下一个事件类型
+            }
+        }catch (IOException e){
+
+        }catch (XmlPullParserException e){
+
+        }catch (Exception e){
+
+        }finally {
+
+        }
+        return regionList;
     }
+
 }

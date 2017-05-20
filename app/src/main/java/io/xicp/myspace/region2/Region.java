@@ -1,5 +1,8 @@
 package io.xicp.myspace.region2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/4/27 0027.
  */
@@ -12,9 +15,20 @@ public class Region {
     private String provincialCapital;
     private String belongTo;
     private String abbreviation;
+    private List<Landscape> landscapeList = new ArrayList<Landscape>();
+
     public Region(){
 
     }
+
+    public List<Landscape> getLandscapeList() {
+        return landscapeList;
+    }
+
+    public void setLandscapeList(List<Landscape> landscapeList) {
+        this.landscapeList = landscapeList;
+    }
+
     public Region(String regionName) {
         this.regionName = regionName;
     }

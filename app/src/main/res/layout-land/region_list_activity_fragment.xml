@@ -14,6 +14,7 @@
         android:background="#76FF87">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -23,17 +24,7 @@
             />
 
 
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="50dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:textColor="#FFFFFF"
 
-            android:text="@string/image"
-            android:textSize="18sp"
-            />
     </RelativeLayout>
 
     <LinearLayout
@@ -72,14 +63,14 @@
             />
 
     </LinearLayout>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/regionList"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="250dp"
         android:layout_below="@id/region_list_header"
 
         >
-    </FrameLayout>
+    </ListView>
     <ImageView
         android:id="@+id/click_tips"
         android:layout_width="match_parent"
@@ -110,6 +101,7 @@
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:visibility="invisible"
         >
     </LinearLayout>
 </RelativeLayout>

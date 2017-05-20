@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="preferExternal"
     package="io.xicp.myspace.region2">
 
     <application
@@ -24,7 +23,16 @@
         <activity android:name=".LandscapeImagePagerActivity">
 
         </activity>
+        <activity android:name=".AboutActivity">
 
+        </activity>
+        <activity android:name=".TestActivity">
+
+        </activity>
+        AnswerListActivity
+        <activity android:name=".AnswerListActivity">
+
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,22 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="net.youmi.android.AdBrowser"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
-        <service
-            android:name="net.youmi.android.AdService"
-            android:exported="false" >
-        </service>
-        <receiver
-            android:name="net.youmi.android.AdReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="io.xicp.myspace.region2.fileProvider"

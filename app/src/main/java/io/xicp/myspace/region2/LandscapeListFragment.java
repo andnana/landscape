@@ -1,12 +1,14 @@
 package io.xicp.myspace.region2;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,9 +18,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,30 +29,34 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+
 
 /**
  * Created by Administrator on 2017/5/7 0007.
  */
 
-public class LandscapeListFragment extends ListFragment {
+public class LandscapeListFragment extends Fragment {
 //    private LandscapeFeed landscapeFeed;
     private List<Landscape> landscapeList = new ArrayList<Landscape>();
     private String regionEnName = "";
-    private String landscapeEnName = "";
+
+
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("region_en_name",regionEnName);
+    }
+
+    @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getActivity().setTitle(R.string.app_name);
-//        landscapeEnName = getArguments().getString(RegionFragment.EXTRA_REGION_ID);
+        if(savedInstanceState != null){
+            regionEnName = savedInstanceState.getString("region_en_name");
+        }
+
         regionEnName = getActivity().getIntent().getStringExtra(RegionFragment.EXTRA_REGION_ID);
-        System.out.println(regionEnName);
-        System.out.println("#$#$#$");
-//        landscapeFeed = getLandscapeFeed();
-//
-//        landscapeList = landscapeFeed.getAlllandscapeList();
-//        System.out.println(landscapeList.size());
+
 
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -61,7 +67,7 @@ public class LandscapeListFragment extends ListFragment {
             DocumentBuilder builder = factory.newDocumentBuilder();
             //解析XML文档，并获取该XML文档对应的Document
             doc = builder.parse(getResources().getAssets().open("region.xml"));
-            System.out.println(doc+"doc");
+
         }catch (ParserConfigurationException e){
             e.printStackTrace();
         }catch(IOException e){
@@ -86,22 +92,18 @@ public class LandscapeListFragment extends ListFragment {
         label1:
         for (int i = 0; i < nodeList.getLength() ; i++ )
         {
-            System.out.println("------------第" + i + "个地区--------------");
 
             Node comBook = nodeList.item(i);
-            System.out.println(comBook.getAttributes().getLength());
+
             //获取ISBN属性节点
             if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(regionEnName)){
 
 
                 //获取所有comBook下的所有子元素
-//                String name ="beijing";
-//                Region region = new Region();
-//                region.setPic(R.mipmap.beijing);
-//                picImageView.setImageResource(R.mipmap.name);
+
                 NodeList attList = comBook.getChildNodes();
                 //遍历每个子元素
-                System.out.println(attList.getLength()+"length");
+
                 for (int j = 0; j < attList.getLength() ; j++ )
                 {
                     Node node = attList.item(j);
@@ -149,23 +151,45 @@ public class LandscapeListFragment extends ListFragment {
 
 
         }
-        LandscapeAdapter adapter = new LandscapeAdapter(landscapeList);
-        setListAdapter(adapter);
+
     }
+
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Landscape landscape = landscapeList.get(position);
-//        System.out.println(region.getRegionName());
-//        System.out.println(region.getEnName());
-//        Intent intent = new Intent(getActivity(), RegionActivity.class);
-        Intent intent = new Intent(getActivity(), LandscapeImageListActivity.class);
-        intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
-        intent.putExtra("landscape_item_en_name", landscape.getEnName());
-        startActivity(intent);
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
+        View v = inflater.inflate(R.layout.landscape_list_activity_fragment, container, false);
+        ImageView backImageView = (ImageView)v.findViewById(R.id.back);
+        ListView landscapeListView = (ListView)v.findViewById(R.id.landscapeList);
+        LandscapeAdapter adapter = new LandscapeAdapter(landscapeList);
+        landscapeListView.setAdapter(adapter);
+        landscapeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> l, View v, int position,
+                                    long id) {
+
+                Landscape landscape = landscapeList.get(position);
+
+                Intent intent = new Intent(getActivity(), LandscapeImageListActivity.class);
+                intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
+                intent.putExtra("landscape_item_en_name", landscape.getEnName());
+                startActivity(intent);
+            }
+        });
+        backImageView.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+//                Intent intent = new Intent(getActivity(), RegionPagerActivity.class);
+//                intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
+//                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+        return v ;
+
+    }
     private class LandscapeAdapter extends ArrayAdapter<Landscape> {
         public LandscapeAdapter(List<Landscape> landscape){
             super(getActivity(), 0, landscape);
@@ -176,39 +200,16 @@ public class LandscapeListFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_landscape, null);
             }
             Landscape landscape = getItem(position);
+
             TextView regionNameTextView = (TextView)convertView.findViewById(R.id.name);
+
             regionNameTextView.setText(landscape.getName());
-            TextView abbreviationTextView = (TextView)convertView.findViewById(R.id.describe);
-            abbreviationTextView.setText(landscape.getDescribe());
+            TextView describeTextView = (TextView)convertView.findViewById(R.id.describe);
+            describeTextView.setText(landscape.getDescribe());
 
             return convertView;
 
         }
     }
-/*    public LandscapeFeed getLandscapeFeed(){
-        try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser parser = factory.newSAXParser();
-            XMLReader reader = parser.getXMLReader();
-            LandscapeHandler handler = new LandscapeHandler();
-            reader.setContentHandler(handler);
-            InputSource is = new InputSource(this.getClass().getClassLoader().getResourceAsStream("assets/region.xml"));//取得本地xml文件
-            System.out.println("abcd");
-            System.out.println(is+"is");
 
-            reader.parse(is);
-
-            return handler.getLandscapeFeed();
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 }

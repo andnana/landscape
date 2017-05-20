@@ -34,6 +34,7 @@
             android:textSize="18sp"
             />
         <TextView
+            android:id="@+id/exit"
             android:layout_height="match_parent"
             android:layout_width="50dp"
             android:layout_alignParentRight="true"
@@ -51,25 +52,29 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         >
-        <ImageButton
+        <ImageView
             android:id="@+id/variousregions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:src="@mipmap/variousregions"
             />
-        <ImageButton
+        <ImageView
+            android:id="@+id/test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:src="@mipmap/test"
+
             />
 
-        <ImageButton
+        <ImageView
+            android:id="@+id/about"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:src="@mipmap/about"
+
             />
 
     </LinearLayout>
@@ -93,6 +98,7 @@ android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:visibility="invisible"
         >
     </LinearLayout>
     </RelativeLayout>

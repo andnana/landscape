@@ -15,6 +15,7 @@
         android:background="#76FF87">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -31,8 +32,7 @@
             android:layout_height="match_parent"
 
             android:layout_alignParentRight="true"
-            android:layout_margin="3dp"
-            android:paddingLeft="5dp"
+            android:padding="5dp"
             android:paddingRight="5dp"
             android:src="@mipmap/forward_alt"
             />

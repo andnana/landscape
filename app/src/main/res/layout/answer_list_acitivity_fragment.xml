@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/answerListContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_vertical"
+    >
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#76FF87">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@mipmap/back_alt"
+            />
+        <TextView
+            android:id="@+id/test"
+            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:layout_margin="3dp"
+            android:paddingLeft="5dp"
+            android:textColor="#FFFFFF"
+
+            android:text="测试"
+            android:textSize="18sp"
+            />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/answer_list_header"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/top"
+        android:background="#FFBDFABD">
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="4"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:text="属于哪个地区"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="2"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:text="答案"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="3"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:text="是否正确"
+            />
+
+    </LinearLayout>
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/answerList"
+        android:layout_below="@id/answer_list_header"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+
+        >
+    </ListView>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@id/answerList"
+    >
+
+    <TextView
+        android:id="@+id/test_result_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_margin="3dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        />
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_margin="3dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="30sp"
+        android:textColor="#FF2884"
+        />
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+    </LinearLayout>
+</RelativeLayout>
+

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Region2.iml" filepath="$PROJECT_DIR$/Region2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/YoumiSdk_v7.2.1_2017-05-16/YoumiSdk_v7.2.1_2017-05-16.iml" filepath="$PROJECT_DIR$/YoumiSdk_v7.2.1_2017-05-16/YoumiSdk_v7.2.1_2017-05-16.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

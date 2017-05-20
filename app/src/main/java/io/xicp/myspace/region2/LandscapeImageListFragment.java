@@ -2,10 +2,14 @@ package io.xicp.myspace.region2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,7 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Administrator on 2017/5/8 0008.
  */
 
-public class LandscapeImageListFragment extends ListFragment {
+public class LandscapeImageListFragment extends Fragment {
     private String regionEnName = "";
     private String landscapeItemEnName = "";
     private List<LandscapeImage> landscapeImageList = new ArrayList<LandscapeImage>();
@@ -39,8 +43,7 @@ public class LandscapeImageListFragment extends ListFragment {
         regionEnName = getActivity().getIntent().getStringExtra(RegionFragment.EXTRA_REGION_ID);
         landscapeItemEnName = getActivity().getIntent().getStringExtra("landscape_item_en_name");
 
-        System.out.println(regionEnName);
-        System.out.println(landscapeItemEnName);
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringElementContentWhitespace(true);
         Document doc = null;
@@ -49,7 +52,7 @@ public class LandscapeImageListFragment extends ListFragment {
             DocumentBuilder builder = factory.newDocumentBuilder();
             //解析XML文档，并获取该XML文档对应的Document
             doc = builder.parse(getResources().getAssets().open("region.xml"));
-            System.out.println(doc+"doc");
+
         }catch (ParserConfigurationException e){
             e.printStackTrace();
         }catch(IOException e){
@@ -74,22 +77,19 @@ public class LandscapeImageListFragment extends ListFragment {
         label1:
         for (int i = 0; i < nodeList.getLength() ; i++ )
         {
-            System.out.println("------------第" + i + "个地区--------------");
+
 
             Node comBook = nodeList.item(i);
-            System.out.println(comBook.getAttributes().getLength());
+
             //获取ISBN属性节点
             if(comBook.getAttributes().getNamedItem("en_name").getNodeValue().trim().equals(regionEnName)){
 
 
                 //获取所有comBook下的所有子元素
-//                String name ="beijing";
-//                Region region = new Region();
-//                region.setPic(R.mipmap.beijing);
-//                picImageView.setImageResource(R.mipmap.name);
+
                 NodeList attList = comBook.getChildNodes();
                 //遍历每个子元素
-                System.out.println(attList.getLength()+"length");
+
                 for (int j = 0; j < attList.getLength() ; j++ )
                 {
                     Node node = attList.item(j);
@@ -138,19 +138,41 @@ public class LandscapeImageListFragment extends ListFragment {
 
 
         }
-        LandscapeImageAdapter adapter = new LandscapeImageAdapter(landscapeImageList);
-        setListAdapter(adapter);
-    }
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        LandscapeImage landscapeImage = landscapeImageList.get(position);
 
-        Intent intent = new Intent(getActivity(), LandscapeImagePagerActivity.class);
-        intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
-        intent.putExtra(LandscapeImageFragment.EXTRA_LANDSCAPE_IMAGE_ID, landscapeImage.getImageEnName());
-        startActivity(intent);
     }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View v = inflater.inflate(R.layout.landscape_image_list_activity_fragment, container, false);
+        ImageView backImageView = (ImageView)v.findViewById(R.id.back);
+        ListView landscapeListView = (ListView)v.findViewById(R.id.landscapeImageList);
+        LandscapeImageAdapter adapter = new LandscapeImageAdapter(landscapeImageList);
+        landscapeListView.setAdapter(adapter);
+        landscapeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> l, View v, int position,
+                                    long id) {
+
+                LandscapeImage landscapeImage = landscapeImageList.get(position);
+
+                Intent intent = new Intent(getActivity(), LandscapeImagePagerActivity.class);
+                intent.putExtra(RegionFragment.EXTRA_REGION_ID, regionEnName);
+                intent.putExtra(LandscapeImageFragment.EXTRA_LANDSCAPE_IMAGE_ID, landscapeImage.getImageEnName());
+                intent.putExtra("landscape_item_en_name", landscapeItemEnName);
+                startActivity(intent);
+            }
+        });
+        backImageView.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                getActivity().finish();
+            }
+        });
+        return v ;
+
+    }
+
     private class LandscapeImageAdapter extends ArrayAdapter<LandscapeImage> {
         public LandscapeImageAdapter(List<LandscapeImage> landscapeImageList){
             super(getActivity(), 0, landscapeImageList);
@@ -162,7 +184,7 @@ public class LandscapeImageListFragment extends ListFragment {
             }
             LandscapeImage landscapeImage = getItem(position);
 
-            TextView imageDescribeTextView = (TextView)convertView.findViewById(R.id.image_describe);
+            TextView imageDescribeTextView = (TextView)convertView.findViewById(R.id.describe);
             imageDescribeTextView.setText(landscapeImage.getImageDescribe());
 
             return convertView;
